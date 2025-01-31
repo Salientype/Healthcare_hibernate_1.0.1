@@ -8,15 +8,12 @@
     <artifactId>hibernatedemo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
     <dependencies>
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.18</version>
+            <version>8.0.31</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.hibernate.orm</groupId>
@@ -30,9 +27,10 @@
             <version>3.0.0</version>
         </dependency>
     </dependencies>
+
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PatientRepositoryImpl{
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public PatientRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
