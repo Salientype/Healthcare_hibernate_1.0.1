@@ -8,6 +8,10 @@ import healthcare.model.Patient;
 import healthcare.repository.PatientRepositoryImpl;
 import healthcare.service.PatientService;
 
+import healthcare.model.Appointment;
+import healthcare.repository.AppointmentRepositoryImpl;
+import healthcare.service.AppointmentService;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -18,6 +22,7 @@ public class Main {
 
         System.out.println("1. Manage Patients");
         System.out.println("2. Manage Doctors");
+        System.out.println("3. Manage Appointments");
 
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
@@ -31,6 +36,10 @@ public class Main {
             case 2:
                 System.out.println("Loading Doctors Interface..");
                 manageDoctor();
+                break;
+            case 3:
+                System.out.println("Loading Appointment Interface..");
+                manageAppointment();
                 break;
             default:
                 System.out.println("Invalid choice..");
@@ -131,8 +140,8 @@ public class Main {
     public static void manageDoctor() {
 
         SessionFactory sessionFactory = new Configuration().configure("healthcare.cfg.xml").buildSessionFactory();
-        DoctorRepositoryImpl patientRepository = new DoctorRepositoryImpl(sessionFactory);
-        DoctorService patientService = new DoctorService(patientRepository);
+        DoctorRepositoryImpl doctorRepository = new DoctorRepositoryImpl(sessionFactory);
+        DoctorService doctorService = new DoctorService(doctorRepository);
 
         System.out.println("1. Create Doctor");
         System.out.println("2. Read Doctor");
@@ -156,19 +165,19 @@ public class Main {
                     newDoctor.setEmail(scanner.nextLine());
                     System.out.print("Enter specialty: ");
                     newDoctor.setSpecialty(scanner.nextLine());
-                    patientService.createDoctor(newDoctor);  // Use service here
+                    doctorService.createDoctor(newDoctor);  // Use service here
                     System.out.println("Doctor created successfully.");
                     break;
                 case 2:
                     // Application calls the service layer, not the repository directly
                     System.out.print("Enter Doctor ID: ");
-                    int patientId = scanner.nextInt();
-                    Doctor patient = patientService.getDoctorById(patientId);  // Use service here
-                    if (patient != null) {
-                        System.out.println("Doctor ID: " + patient.getDoctorId());
-                        System.out.println("Name: " + patient.getFirstName() + " " + patient.getLastName());
-                        System.out.println("Email: " + patient.getEmail());
-                        System.out.println("Specialty: " + patient.getSpecialty());
+                    int doctorId = scanner.nextInt();
+                    Doctor doctor = doctorService.getDoctorById(doctorId);  // Use service here
+                    if (doctor != null) {
+                        System.out.println("Doctor ID: " + doctor.getDoctorId());
+                        System.out.println("Name: " + doctor.getFirstName() + " " + doctor.getLastName());
+                        System.out.println("Email: " + doctor.getEmail());
+                        System.out.println("Specialty: " + doctor.getSpecialty());
                     } else {
                         System.out.println("Doctor not found.");
                     }
@@ -176,19 +185,19 @@ public class Main {
                 case 3:
                     // Application calls the service layer, not the repository directly
                     System.out.print("Enter Doctor ID: ");
-                    patientId = scanner.nextInt();
+                    doctorId = scanner.nextInt();
                     scanner.nextLine();  // consume newline
-                    patient = patientService.getDoctorById(patientId);  // Use service here
-                    if (patient != null) {
+                    doctor = doctorService.getDoctorById(doctorId);  // Use service here
+                    if (doctor != null) {
                         System.out.print("Enter new first name: ");
-                        patient.setFirstName(scanner.nextLine());
+                        doctor.setFirstName(scanner.nextLine());
                         System.out.print("Enter new last name: ");
-                        patient.setLastName(scanner.nextLine());
+                        doctor.setLastName(scanner.nextLine());
                         System.out.print("Enter new email: ");
-                        patient.setEmail(scanner.nextLine());
+                        doctor.setEmail(scanner.nextLine());
                         System.out.print("Enter new specialty: ");
-                        patient.setSpecialty(scanner.nextLine());
-                        patientService.updateDoctor(patient);  // Use service here
+                        doctor.setSpecialty(scanner.nextLine());
+                        doctorService.updateDoctor(doctor);  // Use service here
                         System.out.println("Doctor updated successfully.");
                     } else {
                         System.out.println("Doctor not found.");
@@ -197,9 +206,93 @@ public class Main {
                 case 4:
                     // Application calls the service layer, not the repository directly
                     System.out.print("Enter Doctor ID: ");
-                    patientId = scanner.nextInt();
-                    patientService.deleteDoctor(patientId);  // Use service here
+                    doctorId = scanner.nextInt();
+                    doctorService.deleteDoctor(doctorId);  // Use service here
                     System.out.println("Doctor deleted successfully.");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } finally {
+            scanner.close();
+            sessionFactory.close();
+        }
+
+    }
+
+    public static void manageAppointment() {
+
+        SessionFactory sessionFactory = new Configuration().configure("healthcare.cfg.xml").buildSessionFactory();
+        AppointmentRepositoryImpl appointmentRepository = new AppointmentRepositoryImpl(sessionFactory);
+        AppointmentService appointmentService = new AppointmentService(appointmentRepository);
+
+        System.out.println("1. Create Appointment");
+        System.out.println("2. Read Appointment");
+        System.out.println("3. Update Appointment");
+        System.out.println("4. Delete Appointment");
+
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        try {
+            switch (choice) {
+                case 1:
+                    // Application calls the service layer, not the repository directly
+                    Appointment newAppointment = new Appointment();
+                    System.out.print("Enter Doctor's ID: ");
+                    newAppointment.setDoctorID(scanner.nextInt());
+                    System.out.print("Enter Patient's ID: ");
+                    newAppointment.setPatientID(scanner.nextInt());
+                    System.out.print("Enter appointment date: ");
+                    newAppointment.setAppointmentDate(scanner.nextLine());
+                    System.out.print("Enter any notes: ");
+                    newAppointment.setNotes(scanner.nextLine());
+                    appointmentService.createAppointment(newAppointment);  // Use service here
+                    System.out.println("Appointment created successfully.");
+                    break;
+                case 2:
+                    // Application calls the service layer, not the repository directly
+                    System.out.print("Enter Appointment ID: ");
+                    int appointmentId = scanner.nextInt();
+                    Appointment appointment = appointmentService.getAppointmentById(appointmentId);  // Use service here
+                    if (appointment != null) {
+                        System.out.println("Appointment ID: " + appointment.getAppointmentId());
+                        System.out.println("Doctor: " + appointment.getDoctorID());
+                        System.out.println("Patient: " + appointment.getPatientID());
+                        System.out.println("Appointment Date: " + appointment.getAppointmentDate());
+                        System.out.println("Notes: " + appointment.getNotes());
+                    } else {
+                        System.out.println("Appointment not found.");
+                    }
+                    break;
+                case 3:
+                    // Application calls the service layer, not the repository directly
+                    System.out.print("Enter Appointment ID: ");
+                    appointmentId = scanner.nextInt();
+                    scanner.nextLine();  // consume newline
+                    appointment = appointmentService.getAppointmentById(appointmentId);  // Use service here
+                    if (appointment != null) {
+                        System.out.print("Enter new doctor's ID: ");
+                        appointment.setDoctorID(scanner.nextInt());
+                        System.out.print("Enter new patient's ID: ");
+                        appointment.setPatientID(scanner.nextInt());
+                        System.out.print("Enter new appointment date: ");
+                        appointment.setAppointmentDate(scanner.nextLine());
+                        System.out.print("Enter new notes: ");
+                        appointment.setNotes(scanner.nextLine());
+                        appointmentService.updateAppointment(appointment);  // Use service here
+                        System.out.println("Appointment updated successfully.");
+                    } else {
+                        System.out.println("Appointment not found.");
+                    }
+                    break;
+                case 4:
+                    // Application calls the service layer, not the repository directly
+                    System.out.print("Enter Appointment ID: ");
+                    appointmentId = scanner.nextInt();
+                    appointmentService.deleteAppointment(appointmentId);  // Use service here
+                    System.out.println("Appointment deleted successfully.");
                     break;
                 default:
                     System.out.println("Invalid choice.");

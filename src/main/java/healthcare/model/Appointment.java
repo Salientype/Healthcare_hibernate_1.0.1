@@ -2,6 +2,8 @@ package healthcare.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Appointments")
 public class Appointment {
@@ -18,7 +20,7 @@ public class Appointment {
     private int patientId;
 
     @Column(name = "AppointmentDate")
-    private String appointmentDate;
+    private Date appointmentDate;
 
     @Column(name = "Notes")
     private String notes;
@@ -26,7 +28,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(int appointmentId, int doctorId, int patientId, String appointmentDate, String notes) {
+    public Appointment(int appointmentId, int doctorId, int patientId, Date appointmentDate, String notes) {
         this.appointmentId = appointmentId;
         this.doctorId = doctorId;
         this.patientId = patientId;
@@ -59,10 +61,10 @@ public class Appointment {
     }
 
     public String getAppointmentDate() {
-        return appointmentDate;
+        return String.valueOf(appointmentDate);
     }
 
-    public void setAppointmentDate(String appointmentDate) {
+    public void setAppointmentDate(Date appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
