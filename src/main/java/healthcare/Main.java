@@ -11,6 +11,7 @@ import healthcare.service.PatientService;
 import healthcare.model.Appointment;
 import healthcare.repository.AppointmentRepositoryImpl;
 import healthcare.service.AppointmentService;
+import healthcare.util.DateFormatter;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -244,8 +245,9 @@ public class Main {
                     newAppointment.setDoctorID(scanner.nextInt());
                     System.out.print("Enter Patient's ID: ");
                     newAppointment.setPatientID(scanner.nextInt());
-                    System.out.print("Enter appointment date: ");
-                    newAppointment.setAppointmentDate(scanner.nextLine());
+                    System.out.print("Enter an appointment date (yyyy-MM-dd): ");
+                    newAppointment.setAppointmentDate(DateFormatter.dateFromString());
+                    scanner.nextLine();
                     System.out.print("Enter any notes: ");
                     newAppointment.setNotes(scanner.nextLine());
                     appointmentService.createAppointment(newAppointment);  // Use service here
@@ -278,7 +280,8 @@ public class Main {
                         System.out.print("Enter new patient's ID: ");
                         appointment.setPatientID(scanner.nextInt());
                         System.out.print("Enter new appointment date: ");
-                        appointment.setAppointmentDate(scanner.nextLine());
+                        appointment.setAppointmentDate(DateFormatter.dateFromString());
+                        scanner.nextLine();
                         System.out.print("Enter new notes: ");
                         appointment.setNotes(scanner.nextLine());
                         appointmentService.updateAppointment(appointment);  // Use service here
